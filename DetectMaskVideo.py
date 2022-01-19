@@ -14,7 +14,7 @@ import cv2
 import os
 import paramiko
 
-# Define vars and functions
+# Define vars and functions for EV3 Code
 host = 'ev3dev.local'
 username = 'robot'
 password = 'pihole'
@@ -32,7 +32,7 @@ def timeout(secs):
 def call_ev3_script(no_mask_count):
     # Send mask total count to EV3
     if not inTimeout:
-        print("EV3 script called")
+        print("[INFO] Calling EV3 Script")
         timer = threading.Thread(target=timeout, args=(5,))
         con.exec_command('~/EV3Code/DispenseV2.sh ' + str(no_mask_count))
         timer.start()
@@ -44,36 +44,34 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 	blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300),
 		(104.0, 177.0, 123.0))
 
-	# pass the blob through the network and obtain the face detections
+	# Pass the blob through network and obtain the face detections
 	faceNet.setInput(blob)
 	detections = faceNet.forward()
 
-	# initialize our list of faces, their corresponding locations,
-	# and the list of predictions from our face mask network
+	# Init list of faces, their corresponding locations, and the list of predictions from face detector
 	faces = []
 	locs = []
 	preds = []
 
-	# loop over the detections
+	# Loop over each face detection
 	for i in range(0, detections.shape[2]):
-		# extract the confidence (i.e., probability) associated with
-		# the detection
+		
+		# Extract the confidence associated with the detection
 		confidence = detections[0, 0, i, 2]
 
-		# filter out weak detections by ensuring the confidence is
-		# greater than the minimum confidence
+		# Filter out weak detections by ensuring the confidence is greater than the minimum
 		if confidence > args["confidence"]:
-			# compute the (x, y)-coordinates of the bounding box for
-			# the object
+			
+			# Compute the (x, y) coordinates of the bounding box for the object
 			box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
 			(startX, startY, endX, endY) = box.astype("int")
 
-			# ensure the bounding boxes fall within the dimensions of
+			# Ensure the bounding boxes fall within the dimensions of
 			# the frame
 			(startX, startY) = (max(0, startX), max(0, startY))
 			(endX, endY) = (min(w - 1, endX), min(h - 1, endY))
 
-			# extract the face ROI, convert it from BGR to RGB channel
+			# Extract the face ROI, convert it from BGR to RGB channel
 			# ordering, resize it to 224x224, and preprocess it
 			face = frame[startY:endY, startX:endX]
 			if face.any():
@@ -99,15 +97,15 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 	# locations
 	return (locs, preds)
 
-# construct the argument parser and parse the arguments
+# parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-f", "--face", type=str,
 	default="FaceDetector",
 	help="path to face detector model directory")
 ap.add_argument("-m", "--model", type=str,
-	default="mask_detector2.model",
+	default="MaskDetectorV2.model",
 	help="path to trained face mask detector model")
-ap.add_argument("-c", "--confidence", type=float, default=0.5,
+ap.add_argument("-c", "--confidence", type=float, default=0.7,
 	help="minimum probability to filter weak detections")
 args = vars(ap.parse_args())
 
@@ -122,10 +120,9 @@ faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 print("[INFO] loading face mask detector model...")
 maskNet = load_model(args["model"])
 
-# initialize the video stream and allow the camera sensor to warm up
+# Initialize the video stream
 print("[INFO] starting video stream...")
 vs = VideoStream(src=0).start()
-# time.sleep(2.0)
 
 # loop over the frames from the video stream
 while True:

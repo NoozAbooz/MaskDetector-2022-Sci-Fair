@@ -2,7 +2,7 @@
 
 '''
 python train_mask_detector.py ^
---dataset Dataset --plot plot2.png --model mask_detector2.model
+--dataset Dataset --plot PlotV2.png --model MaskDetectorV2.model
 '''
 
 # import the necessary packages
