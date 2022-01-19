@@ -39,6 +39,7 @@ def call_ev3_script(no_mask_count):
 
 # Mask detection function
 def detect_and_predict_mask(frame, faceNet, maskNet):
+
 	# Grab frame dimensions and then construct a blob with it
 	(h, w) = frame.shape[:2]
 	blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300),
@@ -66,13 +67,12 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 			box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
 			(startX, startY, endX, endY) = box.astype("int")
 
-			# Ensure the bounding boxes fall within the dimensions of
-			# the frame
+			# Ensure the bounding boxes fall within the dimensions of the frame
 			(startX, startY) = (max(0, startX), max(0, startY))
 			(endX, endY) = (min(w - 1, endX), min(h - 1, endY))
 
-			# Extract the face ROI, convert it from BGR to RGB channel
-			# ordering, resize it to 224x224, and preprocess it
+			# Extract the face ROI, convert it from BGR to RGB channel ordering, 
+			# resize it to 224x224, and preprocess it
 			face = frame[startY:endY, startX:endX]
 			if face.any():
 				face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
@@ -80,24 +80,22 @@ def detect_and_predict_mask(frame, faceNet, maskNet):
 				face = img_to_array(face)
 				face = preprocess_input(face)
 
-				# add the face and bounding boxes to their respective
+				# Add the face and bounding boxes to their respective
 				# lists
 				faces.append(face)
 				locs.append((startX, startY, endX, endY))
 
-	# only make a predictions if at least one face was detected
+	# Only make a prediction if at least one face was detected
 	if len(faces) > 0:
-		# for faster inference we'll make batch predictions on *all*
-		# faces at the same time rather than one-by-one predictions
-		# in the above `for` loop
+		# for faster processing, make batch predictions on all
+		# faces at the same time rather than one-by-one predictions in the for loop
 		faces = np.array(faces, dtype="float32")
-		preds = maskNet.predict(faces, batch_size=32)
+		preds = maskNet.predict(faces, batch_size=20)
 
-	# return a 2-tuple of the face locations and their corresponding
-	# locations
+	# Return face locations and their corresponding locations
 	return (locs, preds)
 
-# parse the arguments
+# Parse arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-f", "--face", type=str,
 	default="FaceDetector",
@@ -116,7 +114,7 @@ weightsPath = os.path.sep.join([args["face"],
 	"res10_300x300_ssd_iter_140000.caffemodel"])
 faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
-# load the face mask detector model from disk
+# Load the face mask detector model file
 print("[INFO] loading face mask detector model...")
 maskNet = load_model(args["model"])
 
