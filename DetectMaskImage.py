@@ -1,5 +1,5 @@
 # USAGE
-# python detect_mask_image.py --image images/pic1.jpeg
+# python DetectMaskImage.py --image images/pic1.jpeg
 
 # import the necessary packages
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
@@ -18,7 +18,7 @@ def mask_image():
 		default="FaceDetector",
 		help="path to face detector model directory")
 	ap.add_argument("-m", "--model", type=str,
-		default="mask_detector.model",
+		default="MaskDetectorV2.model",
 		help="path to trained face mask detector model")
 	ap.add_argument("-c", "--confidence", type=float, default=0.5,
 		help="minimum probability to filter weak detections")
