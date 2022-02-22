@@ -1,0 +1,68 @@
+2022-01-05 20:41:21.936782: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:176] hostname: JingLi-HP
+2022-01-05 20:41:21.952849: I tensorflow/core/platform/cpu_feature_guard.cc:142] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use 
+the following CPU instructions in performance-critical operations:  AVX AVX2
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Downloading data from https://storage.googleapis.com/tensorflow/keras-applications/mobilenet_v2/mobilenet_v2_weights_tf_dim_ordering_tf_kernels_1.0_224_no_top.h5
+9412608/9406464 [==============================] - 0s 0us/step
+[INFO] compiling model...
+C:\Users\annli\AppData\Local\Programs\Python\Python39\lib\site-packages\tensorflow\python\keras\optimizer_v2\optimizer_v2.py:374: UserWarning: The `lr` argument is deprecated, use `learning_rate` instead.
+  warnings.warn(
+[INFO] training head...
+2022-01-05 20:41:27.969284: I tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:176] None of the MLIR Optimization Passes are enabled (registered 2)
+Epoch 1/20
+2022-01-05 20:41:31.097568: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 64225280 exceeds 10% of free system memory.
+2022-01-05 20:41:31.175906: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 64225280 exceeds 10% of free system memory.
+2022-01-05 20:41:31.213180: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 64225280 exceeds 10% of free system memory.
+2022-01-05 20:41:31.281283: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 192675840 exceeds 10% of free system memory.
+2022-01-05 20:41:31.361299: W tensorflow/core/framework/cpu_allocator_impl.cc:80] Allocation of 196131840 exceeds 10% of free system memory.
+600/600 [==============================] - ETA: 0s - loss: 0.1812 - accuracy: 0.9385WARNING:tensorflow:Your input ran out of data; interrupting training. Make sure that your dataset or generator can generate at least `steps_per_epoch * epochs` batches (in this case, 150 batches). You may need to use the repeat() function when building your dataset.
+600/600 [==============================] - 932s 2s/step - loss: 0.1812 - accuracy: 0.9385 - val_loss: 0.0656 - val_accuracy: 0.9782
+Epoch 2/20
+600/600 [==============================] - 1665s 3s/step - loss: 0.0871 - accuracy: 0.9720
+Epoch 3/20
+600/600 [==============================] - 1217s 2s/step - loss: 0.0723 - accuracy: 0.9760
+Epoch 4/20
+600/600 [==============================] - 1495s 2s/step - loss: 0.0645 - accuracy: 0.9787
+Epoch 5/20
+600/600 [==============================] - 2929s 5s/step - loss: 0.0608 - accuracy: 0.9792
+Epoch 6/20
+600/600 [==============================] - 3148s 5s/step - loss: 0.0558 - accuracy: 0.9809
+Epoch 7/20
+600/600 [==============================] - 4157s 7s/step - loss: 0.0513 - accuracy: 0.9830
+Epoch 8/20
+600/600 [==============================] - 3851s 6s/step - loss: 0.0457 - accuracy: 0.9848
+Epoch 9/20
+600/600 [==============================] - 3264s 5s/step - loss: 0.0483 - accuracy: 0.9831
+Epoch 10/20
+600/600 [==============================] - 3260s 5s/step - loss: 0.0428 - accuracy: 0.9852
+Epoch 11/20
+600/600 [==============================] - 3364s 6s/step - loss: 0.0427 - accuracy: 0.9853
+Epoch 12/20
+600/600 [==============================] - 3224s 5s/step - loss: 0.0396 - accuracy: 0.9866
+Epoch 13/20
+600/600 [==============================] - 2963s 5s/step - loss: 0.0409 - accuracy: 0.9861
+Epoch 14/20
+600/600 [==============================] - 2913s 5s/step - loss: 0.0375 - accuracy: 0.9870
+Epoch 15/20
+600/600 [==============================] - 3042s 5s/step - loss: 0.0388 - accuracy: 0.9866
+Epoch 16/20
+600/600 [==============================] - 3235s 5s/step - loss: 0.0360 - accuracy: 0.9870
+Epoch 17/20
+600/600 [==============================] - 4889s 8s/step - loss: 0.0341 - accuracy: 0.9881
+Epoch 18/20
+600/600 [==============================] - 4754s 8s/step - loss: 0.0357 - accuracy: 0.9885
+Epoch 19/20
+600/600 [==============================] - 4053s 7s/step - loss: 0.0353 - accuracy: 0.9877
+Epoch 20/20
+600/600 [==============================] - 4856s 8s/step - loss: 0.0348 - accuracy: 0.9885
+[INFO] evaluating network...
+              precision    recall  f1-score   support
+
+   with_mask       0.99      0.99      0.99      3014
+without_mask       0.99      0.99      0.99      2987
+
+    accuracy                           0.99      6001
+   macro avg       0.99      0.99      0.99      6001
+weighted avg       0.99      0.99      0.99      6001
+
+[INFO] saving mask detector model...
