@@ -21,6 +21,7 @@ minConfidence = 0.7
 timeoutPeriod = 5
 disableEV3 = True
 
+# Init vars for FPS counter
 start_time = time.time()
 display_time = 2
 fc = 0
@@ -140,6 +141,7 @@ while True:
     # Run the faces through face/mask detector and log return value
     (locs, preds) = detect_and_predict_mask(frame, maskNet)
 
+    # Calculate FPS
     fc+=1
     TIME = time.time() - start_time
 
@@ -176,6 +178,7 @@ while True:
 
     print("People not wearing masks: " + str(maskless))
 
+    # Draw FPS
     cv2.putText(frame, fps_disp, (10, 25),
 		cv2.FONT_HERSHEY_SIMPLEX, 0.7, (230, 217, 67), 2)
 
