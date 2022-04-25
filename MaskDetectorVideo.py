@@ -81,7 +81,7 @@ def FaceDetector(frame, faceNet):
     detections = faceNet.forward()
 
 # Main mask detection function
-def detect_and_predict_mask(frame, maskNet):
+def MaskDetector(frame, maskNet):
     (h, w) = frame.shape[:2]
     FaceDetector(frame, faceNet)
 
@@ -99,11 +99,11 @@ def detect_and_predict_mask(frame, maskNet):
         # Filter out weak detections
         if confidence > minConfidence:
             
-            # Compute the (x, y) coordinates of the bounding box for the object
+            # Get the (x, y) coordinates of the bounding box for the object
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
 
-            # Ensure the bounding boxes fall within the dimensions of the frame
+            # Ensure the bounding boxes fit inside the frame
             (startX, startY) = (max(0, startX), max(0, startY))
             (endX, endY) = (min(w - 1, endX), min(h - 1, endY))
 
@@ -128,7 +128,7 @@ def detect_and_predict_mask(frame, maskNet):
     # Return face locations and their corresponding locations
     return (locs, preds)
 
-# Initialize the video stream
+# Init the video stream
 print("[INFO] Ininializing video...")
 vs = VideoStream(src=0).start()
 
@@ -139,7 +139,7 @@ while True:
     frame = imutils.resize(frame, width=600, height=400)
 
     # Run the faces through face/mask detector and log return value
-    (locs, preds) = detect_and_predict_mask(frame, maskNet)
+    (locs, preds) = MaskDetector(frame, maskNet)
 
     # Calculate FPS
     fc+=1
@@ -164,11 +164,11 @@ while True:
         label = "Mask" if mask > withoutMask else "No Mask"
         color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
 
-        # Add to number of people not wearing masks
+        # Add to count of people not wearing masks
         if label == "No Mask":
             maskless += 1
 
-        # Add probability to box
+        # Add confidence to bounding box
         label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
 
         # Render boxes on faces
@@ -178,7 +178,7 @@ while True:
 
     print("People not wearing masks: " + str(maskless))
 
-    # Draw FPS
+    # Draw FPS on window
     cv2.putText(frame, fps_disp, (10, 25),
 		cv2.FONT_HERSHEY_SIMPLEX, 0.7, (230, 217, 67), 2)
 
@@ -186,7 +186,7 @@ while True:
     cv2.imshow("Mask Detector", frame)
     key = cv2.waitKey(1) & 0xFF
 
-    # Call the EV3 code if 1 or more people aren't wearing masks
+    # Call the EV3 code if 1 or more people aren't wearing masks and reset counter
     if maskless > 0:
         EV3Caller(maskless)
         maskless = 0
@@ -195,6 +195,6 @@ while True:
     if key == ord("q"):
         break
 
-# Cleanup window and stop webcam feed
+# Close window and stop webcam
 cv2.destroyAllWindows()
 vs.stop()
