@@ -125,7 +125,7 @@ def MaskDetector(frame, maskNet):
         faces = np.array(faces, dtype="float32")
         preds = maskNet.predict(faces, batch_size=20)
 
-    # Return face locations and their corresponding locations
+    # Return labels and their corresponding locations
     return (locs, preds)
 
 # Init the video stream
